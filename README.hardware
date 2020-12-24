@@ -1,0 +1,105 @@
+		TI J721E EVM Support Package
+
+
+Table of Contents
+=================
+
+1. Supported Boards
+2. Change History
+3. BSP Features
+4. BSP Notes
+
+
+1. Supported Boards
+===================
+
+This BSP supports the following boards:
+
+  + TI J721E(DRA829/TDA4xM) EVM: Board: J7X-BASE-CPB rev E3, J721EX-PM2-SOM rev E7
+                                        J7X-VSC8514-ETH rev E2
+                                 CPU: J721E SR1.0
+
+
+2. Change History
+=================
+
+  - 2020/12 (LINUXPG-605): WRLinux CI/CD branch support. Standard support based on
+			   TI SDK ti-processor-sdk-linux-j7-evm-07_01_00_10
+
+
+3. BSP Features
+===============
+
+3.1 Supported Features
+----------------------
+
+The following BSP features are validated and supported on boards where
+the corresponding h/w features exist.
+
+  o Bus
+	+ I2C: High-Speed (HS) Inter-Integrated Circuit (I2C) controllers
+	+ OSPI/QSPI: Serial Peripheral Interface
+	+ USB3.1 Type C: 1x Interface, support DFP, DRP, UFP modes
+	+ USB2.0 Host: 2x Interface for external cables
+	+ PCEe: 2x PCIe Card Slot, 1x PCIe M.2 Slot (M-Key), all Gen3
+
+  o Network
+	+ CPSW2g Ethernet: 1x RGMII/DP83867
+	+ CAN:             4x CAN Interfaces, full CAN-FD support
+
+  o Storage
+	+ EMMC: 	16 GB memory, v5.1 compliant
+	+ SD/MMC: 	MicroSD Card Cage, UHS-I
+	+ OSPI Flash: 	2x Octal-SPI NOR flash, 512 Mb memory(8 bit) + 512 Mb memory(4 bit)
+	+ HyperFlash:	512 Mb flash memory
+	+ UFS Flash:    32GByte, 2Lane, Gear3
+	+ EEPROM:       Inter-Integrated Circuit (I2C) EEPROM
+
+  o Multimedia
+	+ Display Port: up to 4K resolution with MST support
+	+ Audio: Audio Codec (PCM3168A)
+	+ Graphic: PowerVR Series8XE GE8430
+
+  o Misc Devices
+	+ UART: 2x USB FTDI (UART-over-USB)
+	+ GPIO: TI TPS65910 PMIC GPIO
+	+ Crypto: Crypto acceleration support for AES, 3-DES, and RNG
+	+ IPC: Communication between A72 and C7x, C66x, R5F cores
+
+3.2 Unsupported Features
+------------------------
+
+The following features are not supported and validated:
+
+	x ADC
+	x Power Mgmt
+	x FPD-Link Panel: 1x Interface, Gen3
+	x FPD-Link Radio Tuner: 1x Interface
+	x QSGMII Ethernet: QSGMII/VSC8514 through J7X-VSC8514-ETH card
+
+
+4. BSP Notes
+============
+
+4.1 TI J721E EVM
+----------------
+
+The Jacinto7 J721E (DRA829/TDA4xM) EVM is a standalone test, development, and
+evaluation module system that enables developers to write software and
+develop hardware around Jacinto7 J721E (DRA829/TDA4xM) processor subsystem.
+
+For a full description of the J721E EVM, please refer to the following link:
+
+	https://www.ti.com/lit/ug/spruis4a/spruis4a.pdf
+
+4.1 Validated Board Info
+------------------------
+
+This BSP is only validated in following environment. If you use this BSP
+in a different environment it may possibly have some issues.
+
+	Processor:		J721E SR1.0
+	Board Rev:		J7X-BASE-CPB rev E3, J721EX-PM2-SOM rev E7, J7X-VSC8514-ETH rev E2
+	BootLoader:		U-Boot
+	BootLoader Version:	U-Boot 2020.01-g3c9ebdb87d (Nov 19 2020 - 18:29:59 +0000)
+
