@@ -42,6 +42,7 @@ the corresponding h/w features exist.
 	+ USB3.1 Type C: 1x Interface, support DFP, DRP, UFP modes
 	+ USB2.0 Host: 2x Interface for external cables
 	+ PCEe: 2x PCIe Card Slot, 1x PCIe M.2 Slot (M-Key), all Gen3
+		Only PCIe Root Complex.
 
   o Network
 	+ CPSW2g Ethernet: 1x RGMII/DP83867
@@ -51,7 +52,6 @@ the corresponding h/w features exist.
 	+ EMMC: 	16 GB memory, v5.1 compliant
 	+ SD/MMC: 	MicroSD Card Cage, UHS-I
 	+ OSPI Flash: 	2x Octal-SPI NOR flash, 512 Mb memory(8 bit) + 512 Mb memory(4 bit)
-	+ HyperFlash:	512 Mb flash memory
 	+ UFS Flash:    32GByte, 2Lane, Gear3
 	+ EEPROM:       Inter-Integrated Circuit (I2C) EEPROM
 
@@ -64,19 +64,21 @@ the corresponding h/w features exist.
 	+ UART: 2x USB FTDI (UART-over-USB)
 	+ GPIO: TI TPS65910 PMIC GPIO
 	+ Crypto: Crypto acceleration support for AES, 3-DES, and RNG
+	+ CPSW9g virtual MAC: Jacinto 7 CPSW9g virtual MAC (remoteproc)
 	+ IPC: Communication between A72 and C7x, C66x, R5F cores
+	+ Watchdog: K3 RTI Watchdog
+	+ ADC: An analog-to-digital converter
 
 3.2 Unsupported Features
 ------------------------
 
 The following features are not supported and validated:
 
-	x ADC
 	x Power Mgmt
 	x FPD-Link Panel: 1x Interface, Gen3
 	x FPD-Link Radio Tuner: 1x Interface
 	x QSGMII Ethernet: QSGMII/VSC8514 through J7X-VSC8514-ETH card
-
+	x HyperFlash: 512 Mb flash memory
 
 4. BSP Notes
 ============

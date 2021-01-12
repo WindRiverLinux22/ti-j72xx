@@ -177,14 +177,27 @@ images, the second is the related root file system.
 
 ---------------------------------------
 Insert the SD card into the board and select this SD card as the boot device.
-Then set the proper u-boot environment parameters to boot the board like the
-following steps:
+
+If you copy uenv* correctly based on the above steps, the default u-boot
+environment parameters should work fine, there is no need to set them again.
+
+Alternative, you can also set the u-boot environment parameters to boot the board like the
+following:
 
    $ setenv bootargs console=ttyS2,115200n8 earlycon root=/dev/mmcblk1p2 rw rootwait ip=dhcp
    $ fatload mmc 1:1 0x82000000 Image; fatload mmc 1:1 0x88000000 k3-j721e-common-proc-board.dtb; booti 0x82000000 - 0x88000000
 
 6. Features
 ===========
+
+Before using the features below, it is recommended that you first add
+WRTEMPLATE to your build local.conf to add series tools (Such as: can/audio/ufs).
+
+Simply add line as follows to ${buildprj}/build/conf/local.conf:
+	WRTEMPLATE ?= "feature/bsp-extras"
+
+And it is recommended to refer to the "Foundational Components" of the sdk
+release note "Processor SDK Linux for J721e" from the TI web.
 
 6.1 Multilib
 ------------
@@ -212,15 +225,7 @@ Detail verification commands as below:
 
 If can0 dumps data from can1, CAN feature works fine.
 
-6.2.1 Install CAN tools
------------------------
-
-The CAN tools has been moved to BSP_EXTRAS_PACKAGES.
-Simply add line as follows to ${buildprj}/build/conf/local.conf:
-
-	WRTEMPLATE ?= "feature/bsp-extras"
-
-6.2 IPC
+6.3 IPC
 -------
 
 The J7 SOC has integrated ARM Cortex A72 and others cores like: Cortex-R5F cores, C71x and C66X DSPs.
@@ -257,3 +262,29 @@ Since both the u-boot and linux kernel download the firmwares from the
 rootfs directory "/lib/firmware", so NFS is not applicable to this case.
 Only WIC mode works fine.
 
+6.4 Watchdog
+------------
+
+In order to use watchdog, the configuration switch on J721EX-PM2-SOM board should be set with:
+
+SW2.1=OFF, SW2.2=ON, SW3.1=ON, SW3.2=OFF
+
+6.4.1 Usage and verification
+----------------------------
+
+        # echo 1 > /dev/watchdog
+
+6.5 UFS
+-------
+
+6.5.1 Usage and verification
+----------------------------
+
+Running the commands in u-boot to scan the Universal Flash Subsystem (UFS)
+devices.
+	=> ufs init
+	=> scsi scan
+
+If no relevant device was found, please refer to the following link for more
+information:
+	https://e2e.ti.com/support/processors/f/791/t/922975
