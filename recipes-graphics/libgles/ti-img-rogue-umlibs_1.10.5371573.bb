@@ -8,7 +8,7 @@ inherit features_check
 REQUIRED_MACHINE_FEATURES = "gpu"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
-COMPATIBLE_MACHINE = "j7"
+COMPATIBLE_MACHINE = "ti-j72xx"
 
 PR = "r9"
 
@@ -52,10 +52,16 @@ S = "${WORKDIR}/git"
 do_install () {
     oe_runmake install DESTDIR=${D} TARGET_PRODUCT=${PVR_SOC} BUILD=${PVR_BUILD} WINDOW_SYSTEM=${PVR_WS}
     chown -R root:root ${D}
+    if [ ${libdir} = "/usr/lib64" ]; then
+        mkdir -p ${D}/usr/lib64/
+        mv ${D}/usr/lib/lib* ${D}/usr/lib64/
+        mv ${D}/usr/lib/pkgconfig ${D}/usr/lib64/
+    fi
 }
 
-FILES_${PN} += " ${base_libdir}/firmware/"
+FILES_${PN} += " /lib/firmware/"
 FILES_${PN} += " ${datadir}/"
+FILES_${PN} += " /usr/lib/"
 
 PACKAGES =+ "${PN}-plugins"
 FILES_${PN}-plugins = "${libdir}/libGLESv2.so ${libdir}/libGLESv1_CM.so ${libdir}/libEGL.so ${libdir}/dri/pvr_dri.so"

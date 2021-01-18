@@ -353,3 +353,46 @@ Step 6: Run on EVM
 	$ cd /opt/vision_apps
 	$ source ./vision_apps_init.sh
 	$ ./run_app_tidl_avp.sh                 - Auto valet parking demo (needs display)
+
+6.7 Graphics
+------------
+
+J721E device is enabled with 3D graphics accelerator based on the Rogue 8XE series
+from Imagination Technologies Inc. 3D-graphics apps call userspace libraries to drive
+the GPU directly by the graphics driver.
+
+Due to the software license terms, we are not permitted to redistribute these components.
+Due to this, we are unable to support the components (ti-img-rogue-driver, img-pvr-sdk and
+ti-img-rogue-umlibs) or directly enable them (ti-img-rogue-driver, img-pvr-sdk and
+ti-img-rogue-umlibs) within Wind River Linux. Please contact your silicon vendor if you have
+any questions about the software license terms.
+
+As below is the step how to build a graphics enabled system and verify the graphics feature:
+
+6.7.1 Build Image
+-----------------
+
+  1) set BB_NO_NETWORK as '0' in <path-of-project>/build/conf/local.conf file.
+
+  2) Launch bitbake to build an image with graphics support
+
+     $ cd path_to_your_project
+     $ . ./environment-setup-x86_64-wrlinuxsdk-linux
+     $ . ./oe-init-build-env
+     $ cat << _EOF >> conf/local.conf
+DISTRO ?= "wrlinux-graphics"
+MACHINE_FEATURES += " gpu"
+_EOF
+     $ bitbake wrlinux-image-std-sato
+
+6.7.2 Verify Graphic feature
+----------------------------
+
+Connect with DP port(J37) and run below command:
+
+	#/usr/bin/SGX/demos/DRM/OGLES2ChameleonMan
+	#/usr/bin/SGX/demos/DRM/OGLES2Coverflow
+	#/usr/bin/SGX/demos/DRM/OGLES2ExampleUI
+	#/usr/bin/SGX/demos/DRM/OGLES2FilmTV
+	#/usr/bin/SGX/demos/DRM/OGLES2MagicLantern
+	#/usr/bin/SGX/demos/DRM/OGLES2Navigation
