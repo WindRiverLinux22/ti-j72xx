@@ -245,7 +245,9 @@ Get firmwares for EthSwitch firmware & R5 core and DSPs from IT website(For
 example to get "07_01_00_38" version firmwares):
 	# wget https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/firmware/07_01_00_38/coresdk_rtos_j721e_07_01_00_38_firmware.tar.xz
 
-Copy all the picked firmwares to wrlinux rootfs directory "/lib/firmware/"
+Copy all the picked firmwares to wrlinux rootfs directory "/lib/firmware/", and
+need to set executable attribute for these firmwares.
+	# sudo chmod +x -R /lib/firmware/
 
 Initialize all the available remote cores in the u-boot:
 	$ rproc init;run boot_rprocs_mmc;
@@ -288,3 +290,66 @@ devices.
 If no relevant device was found, please refer to the following link for more
 information:
 	https://e2e.ti.com/support/processors/f/791/t/922975
+
+6.6 Vision Apps
+---------------
+
+Vision Apps is a component within Processor SDK RTOS.
+
+Vision Apps integrates different components within Processor SDK RTOS (PSDK RTOS) like SysBIOS, PDK, OpenVX, Algorithms
+to realize system applications for vision processing like surround view.
+
+Vision Apps can be built or directly picked as out of the Box Demos from TI web,
+prebuilt PSDK RTOS and Demo Data can be downloaded from:
+	https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/07_01_00_11/index_FDS.html
+
+In order to run vision apps on linux, it requires demo binaries and IPC firmware
+preintegrated. So the above chapter "6.3 IPC" must be done first.
+
+It is recommended that you first refer to this guide document while using the
+vision apps:
+	https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/07_01_00_11/exports/docs/psdk_rtos/docs/user_guide/out_of_box_j721e.html
+
+Run vision apps on EVM target in WRLinux + RTOS mode (via SD card boot) with below
+steps:
+
+6.6.1 Usage and verification
+----------------------------
+
+Step 1: Download Prebuilt PSDK RTOS
+
+	$ cd {path/to/file}
+	$ tar xf ti-processor-sdk-rtos-j721e-evm-<version>-prebuilt.tar.gz
+
+Step 2: Download Demo Data Sets
+	psdk_rtos_ti_data_set_xx_xx_xx.tar.gz
+	psdk_rtos_ti_data_set_ptk_xx_xx_xx.tar.gz
+
+Step 3: Prepare SD card
+	$ sudo ./mk-linux-card.sh /dev/sdx
+
+Note: make sure to give the correct device name to the following script, example
+/dev/sda is typically local hard disk.
+
+Step 4: Copy WRLinux Filesystem and Modify script
+	$ cp path_to_your_project/build/tmp-glibc/deploy/images/ti-j72xx/wrlinux-image-<rootfs_type>-ti-j72xx.tar.bz2 .
+	$ sed -i "s/tisdk-default-image-j7-evm.tar.xz/wrlinux-image-<rootfs_type>-ti-j72xx.tar.bz2/;41s/-xf/-jxf/" install_to_sd_card.sh
+
+Note: for the name wrlinux-image-<rootfs_type>-ti-j72xx.tar.bz2, rootfs_type needs to be
+specified according to the rootfs type, like std or sato.
+
+Step 5: Install Filesystem and Boot Files
+	$ ./install_to_sd_card.sh
+	$ ./install_data_set_to_sd_card.sh <path/to/psdk_rtos_ti_data_set_xx_xx_xx.tar.gz>
+	$ ./install_data_set_to_sd_card.sh <path/to/psdk_rtos_ti_data_set_ptk_xx_xx_xx.tar.gz>
+
+Step 6: Run on EVM
+ First time only:
+	$ env default –a –f
+	$ saveenv
+	$ reset
+
+ Run series demos:
+	$ cd /opt/vision_apps
+	$ source ./vision_apps_init.sh
+	$ ./run_app_tidl_avp.sh                 - Auto valet parking demo (needs display)
