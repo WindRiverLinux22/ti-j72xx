@@ -1,0 +1,81 @@
+From 5e7c3d3d3c1a3685b137bd1431dc946fa518995e Mon Sep 17 00:00:00 2001
+From: Xulin Sun <xulin.sun@windriver.com>
+Date: Thu, 4 Mar 2021 10:18:56 +0800
+Subject: [PATCH] DevIL: replace lib with lib64 to CMakeLists.txt
+
+The created image files of user library are not on
+the /usr/lib directory instead of the /usr/lib64 directory.
+So replace the install directory with lib64.
+
+Upstream-Status: Inappropriate [upstream using /usr/lib]
+
+Signed-off-by: Xulin Sun <xulin.sun@windriver.com>
+---
+ DevIL/src-IL/CMakeLists.txt   | 4 ++--
+ DevIL/src-ILU/CMakeLists.txt  | 4 ++--
+ DevIL/src-ILUT/CMakeLists.txt | 4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/DevIL/src-IL/CMakeLists.txt b/DevIL/src-IL/CMakeLists.txt
+index 3cda85cf..89c2b950 100644
+--- a/DevIL/src-IL/CMakeLists.txt
++++ b/DevIL/src-IL/CMakeLists.txt
+@@ -312,13 +312,13 @@ configure_file( pkgconfig/IL.pc.cmake.in
+ # Installation
+ install (TARGETS IL
+     ARCHIVE DESTINATION lib
+-    LIBRARY DESTINATION lib
++    LIBRARY DESTINATION lib64
+     RUNTIME DESTINATION bin
+ )
+ install (FILES ../include/IL/il.h DESTINATION include/IL)
+ 
+ install(FILES
+     ${CMAKE_CURRENT_BINARY_DIR}/IL.pc
+-	DESTINATION lib/pkgconfig
++	DESTINATION lib64/pkgconfig
+ )
+ 
+diff --git a/DevIL/src-ILU/CMakeLists.txt b/DevIL/src-ILU/CMakeLists.txt
+index 44b9531b..d92b714c 100644
+--- a/DevIL/src-ILU/CMakeLists.txt
++++ b/DevIL/src-ILU/CMakeLists.txt
+@@ -76,13 +76,13 @@ endif(UNICODE)
+ # Installation
+ install (TARGETS ILU
+     ARCHIVE DESTINATION lib
+-    LIBRARY DESTINATION lib
++    LIBRARY DESTINATION lib64
+     RUNTIME DESTINATION bin
+ )
+ install (FILES ../include/IL/ilu.h DESTINATION include/IL)
+ 
+ install(FILES
+     ${CMAKE_CURRENT_BINARY_DIR}/ILU.pc
+-	DESTINATION lib/pkgconfig
++	DESTINATION lib64/pkgconfig
+ )
+ 
+diff --git a/DevIL/src-ILUT/CMakeLists.txt b/DevIL/src-ILUT/CMakeLists.txt
+index 63662bc6..ca1ad2e7 100644
+--- a/DevIL/src-ILUT/CMakeLists.txt
++++ b/DevIL/src-ILUT/CMakeLists.txt
+@@ -96,13 +96,13 @@ endif(UNICODE)
+ # Installation
+ install (TARGETS ILUT
+     ARCHIVE DESTINATION lib
+-    LIBRARY DESTINATION lib
++    LIBRARY DESTINATION lib64
+     RUNTIME DESTINATION bin
+ )
+ install (FILES ../include/IL/ilut.h DESTINATION include/IL)
+ 
+ install(FILES
+     ${CMAKE_CURRENT_BINARY_DIR}/ILUT.pc
+-	DESTINATION lib/pkgconfig
++	DESTINATION lib64/pkgconfig
+ )
+ 
+-- 
+2.17.1
+
