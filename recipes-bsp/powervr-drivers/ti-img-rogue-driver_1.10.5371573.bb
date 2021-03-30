@@ -19,7 +19,11 @@ PROVIDES = "virtual/gpudriver"
 
 BRANCH = "linuxws/zeus/k5.4/${PV}"
 
-SRC_URI = "git://git.ti.com/graphics/ti-img-rogue-driver.git;branch=${BRANCH}"
+SRC_URI = "git://git.ti.com/graphics/ti-img-rogue-driver.git;branch=${BRANCH} \
+	   file://0001-server-replace-mmap_sem-with-mmap_lock.patch \
+	   file://0002-server-remove-prot-argument-for-vm_map_ram-call.patch \
+	   file://0003-server-replace-getrawmonotonic-with-ktime_get_raw_ts.patch \
+	   file://0004-server-replace-ioremap_nocache-with-ioremap.patch"
 
 S = "${WORKDIR}/git"
 
