@@ -303,12 +303,15 @@ Vision Apps can be built or directly picked as out of the Box Demos from TI web,
 prebuilt PSDK RTOS and Demo Data can be downloaded from:
 	https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/07_01_00_11/index_FDS.html
 
-In order to run vision apps on linux, it requires demo binaries and IPC firmware
-preintegrated. So the above chapter "6.3 IPC" must be done first.
-
 It is recommended that you first refer to this guide document while using the
 vision apps:
 	https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/07_01_00_11/exports/docs/psdk_rtos/docs/user_guide/out_of_box_j721e.html
+
+In order to run vision apps with full features on WRLinux, WRLinux should be built with:
+	- Modify the ${buildprj}/build/conf/local.conf to add:
+		WRTEMPLATE ?= "feature/bsp-extras"
+		KERNEL_FEATURES_append = " bsp/ti-j72xx/ti-j72xx-remoteproc.scc"
+	- Enable Graphics feature, please refer to "6.7.1 Build Image"
 
 Run vision apps on EVM target in WRLinux + RTOS mode (via SD card boot) with below
 steps:
