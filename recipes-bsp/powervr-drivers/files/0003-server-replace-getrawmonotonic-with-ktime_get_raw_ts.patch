@@ -17,7 +17,7 @@ diff --git a/services/server/env/linux/osfunc.c b/services/server/env/linux/osfu
 index 91d66e7..59c51dc 100644
 --- a/services/server/env/linux/osfunc.c
 +++ b/services/server/env/linux/osfunc.c
-@@ -620,9 +620,9 @@ PVRSRV_ERROR OSClockMonotonicus64(IMG_UINT64 *pui64Time)
+@@ -613,9 +613,9 @@ PVRSRV_ERROR OSClockMonotonicus64(IMG_UINT64 *pui64Time)
  
  IMG_UINT64 OSClockMonotonicRawns64(void)
  {

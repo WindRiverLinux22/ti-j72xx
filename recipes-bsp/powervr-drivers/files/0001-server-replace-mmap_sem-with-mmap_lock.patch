@@ -21,29 +21,29 @@ diff --git a/services/server/common/cache_km.c b/services/server/common/cache_km
 index 646fa24..8eddac7 100644
 --- a/services/server/common/cache_km.c
 +++ b/services/server/common/cache_km.c
-@@ -1465,7 +1465,7 @@ static INLINE PVRSRV_ERROR CacheOpValidateVAOffset(PMR *psPMR,
+@@ -1212,7 +1212,7 @@ static INLINE PVRSRV_ERROR CacheOpValidateVAOffset(PMR *psPMR,
  	}
  	else if (mm)
  	{
 -		down_read(&mm->mmap_sem);
 +		down_read(&mm->mmap_lock);
  
- 		vma = find_vma(mm, (unsigned long)(uintptr_t)pvAddress);
- 		if (!vma ||
-@@ -1490,7 +1490,7 @@ static INLINE PVRSRV_ERROR CacheOpValidateVAOffset(PMR *psPMR,
- 			pvAddress = NULL;		
+ 		vma = find_vma(mm, (unsigned long)(uintptr_t)pvAddr);
+ 
+@@ -1228,7 +1228,7 @@ static INLINE PVRSRV_ERROR CacheOpValidateVAOffset(PMR *psPMR,
+ 			pvAddr = NULL;
  		}
  
 -		up_read(&mm->mmap_sem);
 +		up_read(&mm->mmap_lock);
  	}
- 	else 
- 	{
+ #endif
+ 
 diff --git a/services/server/env/linux/osfunc.c b/services/server/env/linux/osfunc.c
 index 91d66e7..fb7bd6c 100644
 --- a/services/server/env/linux/osfunc.c
 +++ b/services/server/env/linux/osfunc.c
-@@ -1726,7 +1726,7 @@ PVRSRV_ERROR OSChangeSparseMemCPUAddrMap(void **psPageArray,
+@@ -1523,7 +1523,7 @@ PVRSRV_ERROR OSChangeSparseMemCPUAddrMap(void **psPageArray,
  	}
  
  	/* Acquire the memory sem */
@@ -51,73 +51,15 @@ index 91d66e7..fb7bd6c 100644
 +	down_write(&psMM->mmap_lock);
  
  	psMapping = psVMA->vm_file->f_mapping;
- 	
-@@ -1843,7 +1843,7 @@ PVRSRV_ERROR OSChangeSparseMemCPUAddrMap(void **psPageArray,
+ 
+@@ -1664,7 +1664,7 @@ PVRSRV_ERROR OSChangeSparseMemCPUAddrMap(void **psPageArray,
  
  	eError = PVRSRV_OK;
- 	eFailed:
+ eFailed:
 -	up_write(&psMM->mmap_sem);
 +	up_write(&psMM->mmap_lock);
  
  	return eError;
- }
-diff --git a/services/server/env/linux/physmem_extmem_linux.c b/services/server/env/linux/physmem_extmem_linux.c
-index b625ae6..56352e7 100644
---- a/services/server/env/linux/physmem_extmem_linux.c
-+++ b/services/server/env/linux/physmem_extmem_linux.c
-@@ -257,7 +257,7 @@ static IMG_BOOL _TryFindVMA(IMG_DEVMEM_SIZE_T uiSize,
- 	IMG_UINT32 i;
- 	uintptr_t uAddr;
- 
--	down_read(&current->mm->mmap_sem);
-+	down_read(&current->mm->mmap_lock);
- 
- 	/* Find the VMA */
- 	psVMArea = find_vma(current->mm, pvCpuVAddr);
-@@ -344,7 +344,7 @@ static IMG_BOOL _TryFindVMA(IMG_DEVMEM_SIZE_T uiSize,
- 	/* Sanity check */
- 	PVR_ASSERT(i == psPrivData->uiTotalNumPages);
- 
--	up_read(&current->mm->mmap_sem);
-+	up_read(&current->mm->mmap_lock);
- 
- 	return IMG_TRUE;
- 
-@@ -357,7 +357,7 @@ e1:
- 		}
- 	}
- e0:
--	up_read(&current->mm->mmap_sem);
-+	up_read(&current->mm->mmap_lock);
- 	return IMG_FALSE;
- }
- 
-@@ -387,7 +387,7 @@ static IMG_BOOL _TryGetUserPages(IMG_DEVMEM_SIZE_T uiSize,
- {
- 	IMG_INT32 iMappedPages, i;
- 
--	down_read(&current->mm->mmap_sem);
-+	down_read(&current->mm->mmap_lock);
- 
- 	/* Do the actual call */
- 	iMappedPages = get_user_pages((uintptr_t) pvCpuVAddr,
-@@ -397,7 +397,7 @@ static IMG_BOOL _TryGetUserPages(IMG_DEVMEM_SIZE_T uiSize,
- 	                              NULL);
- 	if (iMappedPages == 0 || iMappedPages != psPrivData->uiTotalNumPages)
- 	{
--		up_read(&current->mm->mmap_sem);
-+		up_read(&current->mm->mmap_lock);
- 
- 		PVR_DPF((PVR_DBG_MESSAGE,
- 		         "get_user_pages() failed, got back %d, expected num pages %d",
-@@ -413,7 +413,7 @@ static IMG_BOOL _TryGetUserPages(IMG_DEVMEM_SIZE_T uiSize,
- 		psPrivData->ppvPhysAddr[i].uiAddr = page_to_phys(psPrivData->ppsPageArray[i]);
- 	}
- 
--	up_read(&current->mm->mmap_sem);
-+	up_read(&current->mm->mmap_lock);
- 
- 	return IMG_TRUE;
  }
 -- 
 2.17.1

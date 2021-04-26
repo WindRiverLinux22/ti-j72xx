@@ -32,7 +32,7 @@ diff --git a/services/server/env/linux/physmem_osmem_linux.c b/services/server/e
 index e4bebb4..6d352c4 100644
 --- a/services/server/env/linux/physmem_osmem_linux.c
 +++ b/services/server/env/linux/physmem_osmem_linux.c
-@@ -947,7 +947,7 @@ _ZeroPageArray(IMG_UINT32 uiNumToClean,
+@@ -951,7 +951,7 @@ _ZeroPageArray(IMG_UINT32 uiNumToClean,
  #if !defined(CONFIG_64BIT) || defined(PVRSRV_FORCE_SLOWER_VMAP_ON_64BIT_BUILDS)
  		pvAddr = vmap(ppsCleanArray, uiToClean, VM_WRITE, pgprot);
  #else
@@ -41,29 +41,29 @@ index e4bebb4..6d352c4 100644
  #endif
  		if (!pvAddr)
  		{
-@@ -1501,7 +1501,7 @@ _ApplyCacheMaintenance(PVRSRV_DEVICE_NODE *psDevNode,
- 				IMG_CPU_PHYADDR sUnused =
- 					{ IMG_CAST_TO_CPUPHYADDR_UINT(0xCAFEF00DDEADBEEFULL) };
+@@ -1503,7 +1503,7 @@ _ApplyCacheMaintenance(PVRSRV_DEVICE_NODE *psDevNode,
+ 			IMG_CPU_PHYADDR sUnused =
+ 				{ IMG_CAST_TO_CPUPHYADDR_UINT(0xCAFEF00DDEADBEEFULL) };
  
--				pvAddr = vm_map_ram(ppsCleanArray, uiToClean, -1, pgprot);
-+				pvAddr = vm_map_ram(ppsCleanArray, uiToClean, -1);
- 				if (!pvAddr)
- 				{
- 					PVR_DPF((PVR_DBG_ERROR,
-@@ -3156,7 +3156,7 @@ PMRAcquireKernelMappingDataOSMem(PMR_IMPL_PRIVDATA pvPriv,
+-			pvAddr = vm_map_ram(ppsCleanArray, uiToClean, -1, pgprot);
++			pvAddr = vm_map_ram(ppsCleanArray, uiToClean, -1);
+ 			if (!pvAddr)
+ 			{
+ 				PVR_DPF((PVR_DBG_ERROR,
+@@ -3180,7 +3180,7 @@ PMRAcquireKernelMappingDataOSMem(PMR_IMPL_PRIVDATA pvPriv,
  #if !defined(CONFIG_64BIT) || defined(PVRSRV_FORCE_SLOWER_VMAP_ON_64BIT_BUILDS)
- 	pvAddress = vmap(pagearray, uiMapPageCount, VM_READ | VM_WRITE, prot);
+ 	pvAddress = vmap(pagearray, ui32PageCount, VM_READ | VM_WRITE, prot);
  #else
--	pvAddress = vm_map_ram(pagearray, uiMapPageCount, -1, prot);
-+	pvAddress = vm_map_ram(pagearray, uiMapPageCount, -1);
+-	pvAddress = vm_map_ram(pagearray, ui32PageCount, -1, prot);
++	pvAddress = vm_map_ram(pagearray, ui32PageCount, -1);
  #endif
  	if (pvAddress == NULL)
  	{
-diff --git a/services/system/common/env/linux/dma_support.c b/services/system/common/env/linux/dma_support.c
+diff --git a/services/system/rogue/common/env/linux/dma_support.c b/services/system/rogue/common/env/linux/dma_support.c
 index fd111dc..f89a38d 100644
---- a/services/system/common/env/linux/dma_support.c
-+++ b/services/system/common/env/linux/dma_support.c
-@@ -143,7 +143,7 @@ SysDmaAcquireKernelAddress(struct page *psPage, IMG_UINT64 ui64Size, void *pvOSD
+--- a/services/system/rogue/common/env/linux/dma_support.c
++++ b/services/system/rogue/common/env/linux/dma_support.c
+@@ -140,7 +140,7 @@ SysDmaAcquireKernelAddress(struct page *psPage, IMG_UINT64 ui64Size, void *pvOSD
  #if !defined(CONFIG_64BIT) || defined(PVRSRV_FORCE_SLOWER_VMAP_ON_64BIT_BUILDS)
  	pvVirtAddr = vmap(pagearray, ui32PgCount, VM_READ | VM_WRITE, prot);
  #else
