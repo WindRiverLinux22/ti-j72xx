@@ -10,13 +10,13 @@ REQUIRED_MACHINE_FEATURES = "gpu"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 COMPATIBLE_MACHINE = "ti-j72xx"
 
-PR = "r9"
+PR = "r2"
 
-BRANCH = "linuxws/zeus/k5.4/${PV}"
+BRANCH = "linuxws/dunfell/k5.4/${PV}"
 
 SRC_URI = "git://git.ti.com/graphics/ti-img-rogue-umlibs.git;branch=${BRANCH}"
 
-SRCREV = "8d3d1891186ed3f397bb90f4f8c518c6c9970479"
+SRCREV = "5ef38353c38d921a65ea6df75c7b6ce710b66034"
 
 PVR_SOC ?= "j721e_linux"
 PVR_BUILD ?= "release"
