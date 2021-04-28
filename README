@@ -167,11 +167,15 @@ images, the second is the related root file system.
 
    $ sudo dd if=wrlinux-image-<rootfs_type>-ti-j72xx.wic of=/dev/sdx
 
-2) Deploy your own tiboot3.bin tispl.bin sysfw.itb u-boot.img and uenv* into this /dev/sdx1
+2) Deploy the TI's bootloader files {tiboot3.bin tispl.bin sysfw.itb u-boot.img and uenv*} into this /dev/sdx1
 
    $ sudo mount /dev/sdx1 path_to_sdx1
    $ cp path_to_your_bootloader/{tiboot3.bin tispl.bin sysfw.itb u-boot.img and uenv*} path_to_sdx1
    $ sync; sudo umount path_to_sdx1
+
+Note:
+The TI's bootloader tar package "boot-j7-evm.tar.gz" can be downloaded from
+http://software-dl.ti.com/jacinto7/esd/processor-sdk-linux-jacinto7/latest/index_FDS.html
 
 5.2 Boot the board from the WIC SD card
 
@@ -242,8 +246,8 @@ Built and install them:
 	# bitbake wrlinux-image-xxx
 
 Get firmwares for EthSwitch firmware & R5 core and DSPs from IT website(For
-example to get "07_01_00_38" version firmwares):
-	# wget https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/firmware/07_01_00_38/coresdk_rtos_j721e_07_01_00_38_firmware.tar.xz
+example to get "07_03_00_29" version firmwares):
+	# wget https://downloads.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/firmware/07_03_00_29/coresdk_rtos_j721e_07_03_00_29_firmware.tar.xz
 
 Copy all the picked firmwares to wrlinux rootfs directory "/lib/firmware/", and
 need to set executable attribute for these firmwares.
@@ -301,11 +305,11 @@ to realize system applications for vision processing like surround view.
 
 Vision Apps can be built or directly picked as out of the Box Demos from TI web,
 prebuilt PSDK RTOS and Demo Data can be downloaded from:
-	https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/07_01_00_11/index_FDS.html
+	https://www.ti.com/tool/download/PROCESSOR-SDK-RTOS-J721E/07.03.00.07
 
 It is recommended that you first refer to this guide document while using the
 vision apps:
-	https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/07_01_00_11/exports/docs/psdk_rtos/docs/user_guide/out_of_box_j721e.html
+	https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/07_03_00_07/exports/docs/psdk_rtos/docs/user_guide/out_of_box_j721e.html
 
 In order to run vision apps with full features on WRLinux, WRLinux should be built with:
 	- Modify the ${buildprj}/build/conf/local.conf to add:
