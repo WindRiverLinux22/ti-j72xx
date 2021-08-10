@@ -239,7 +239,7 @@ In order to verify the IPC feature, need to build wrlinux with below steps:
 
 Add line as follows to ${buildprj}/build/conf/local.conf:
 
-	KERNEL_FEATURES_append = " bsp/ti-j72xx/ti-j72xx-remoteproc.scc"
+	KERNEL_FEATURES:append = " bsp/ti-j72xx/ti-j72xx-remoteproc.scc"
 
 Built and install them:
 
@@ -314,7 +314,7 @@ vision apps:
 In order to run vision apps with full features on WRLinux, WRLinux should be built with:
 	- Modify the ${buildprj}/build/conf/local.conf to add:
 		WRTEMPLATE ?= "feature/bsp-extras"
-		KERNEL_FEATURES_append = " bsp/ti-j72xx/ti-j72xx-remoteproc.scc"
+		KERNEL_FEATURES:append = " bsp/ti-j72xx/ti-j72xx-remoteproc.scc"
 	- Enable Graphics feature, please refer to "6.7.1 Build Image"
 
 Run vision apps on EVM target in WRLinux + RTOS mode (via SD card boot) with below

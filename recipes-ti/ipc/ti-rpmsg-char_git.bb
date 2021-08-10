@@ -7,4 +7,4 @@ inherit autotools pkgconfig
 PR = "r0"
 
 COMPATIBLE_MACHINE = "^$"
-COMPATIBLE_MACHINE_ti-j72xx = "ti-j72xx"
+COMPATIBLE_MACHINE:ti-j72xx = "ti-j72xx"

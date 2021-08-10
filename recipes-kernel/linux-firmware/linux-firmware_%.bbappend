@@ -1,22 +1,22 @@
-LICENSE_${PN}_append_ti-j72xx = "\
+LICENSE:${PN}:append:ti-j72xx = "\
 	& Firmware-cadence \
 "
 
-LICENSE_append_ti-j72xx = "\
+LICENSE:append:ti-j72xx = "\
 	& Firmware-cadence \
 "
 
-FILES_${PN}-cadence_ti-j72xx = " \
+FILES:${PN}-cadence:ti-j72xx = " \
   ${nonarch_base_libdir}/firmware/cadence/mhdp8546.bin \
 "
-FILES_${PN}-cadence-license_ti-j72xx = " \
+FILES:${PN}-cadence-license:ti-j72xx = " \
   ${nonarch_base_libdir}/firmware/LICENCE.cadence \
 "
-RDEPENDS_${PN}-cadence_ti-j72xx += "${PN}-cadence-license"
-LICENSE_${PN}-cadence_ti-j72xx       	= "Firmware-cadence"
-LICENSE_${PN}-cadence-license_ti-j72xx  = "Firmware-cadence"
+RDEPENDS:${PN}-cadence:ti-j72xx += "${PN}-cadence-license"
+LICENSE:${PN}-cadence:ti-j72xx       	= "Firmware-cadence"
+LICENSE:${PN}-cadence-license:ti-j72xx  = "Firmware-cadence"
 
-PACKAGES_prepend_ti-j72xx = "\
+PACKAGES:prepend:ti-j72xx = "\
 	${PN}-cadence \
 	${PN}-cadence-license \
 	"
