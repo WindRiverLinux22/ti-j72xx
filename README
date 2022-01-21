@@ -389,8 +389,8 @@ As below is the step how to build a graphics enabled system and verify the graph
      $ cat << _EOF >> conf/local.conf
 DISTRO ?= "wrlinux-graphics"
 MACHINE_FEATURES += " gpu"
-PNWHITELIST:wr-ti-j72xx += 'img-pvr-sdk'
-PNWHITELIST:wr-ti-j72xx += 'ti-img-rogue-umlibs'
+WRL_RECIPES:wr-ti-j72xx += 'img-pvr-sdk'
+WRL_RECIPES:wr-ti-j72xx += 'ti-img-rogue-umlibs'
 _EOF
      $ bitbake wrlinux-image-std-sato
 
@@ -428,8 +428,8 @@ added to the system by default. You can manually build the Image as below:
   1) Add line as follows to ${buildprj}/build/conf/local.conf:
      $ cat << _EOF >> conf/local.conf
 LICENSE_FLAGS_WHITELIST += "commercial"
-PNWHITELIST:wr-ti-j72xx += 'viddec-test-app'
-PNWHITELIST:wr-ti-j72xx += 'videnc-test-app'
+WRL_RECIPES:wr-ti-j72xx += 'viddec-test-app'
+WRL_RECIPES:wr-ti-j72xx += 'videnc-test-app'
 IMAGE_INSTALL:append:ti-j72xx = ' viddec-test-app videnc-test-app'
 _EOF
 
