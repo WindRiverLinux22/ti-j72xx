@@ -1,0 +1,130 @@
+From 8985f8d089f6ddf45dca3a944fc24682ca332b07 Mon Sep 17 00:00:00 2001
+From: Xulin Sun <xulin.sun@windriver.com>
+Date: Sun, 13 Mar 2022 18:18:52 +0800
+Subject: [PATCH 3/3] service: physmem_dmabuf: replace dma_buf_vmap(x) with 
+ dma_buf_vmap(x, y);
+
+The kernel commit 6619ccf1bb1d0(dma-buf: Use struct dma_buf_map in dma_buf_vmap() interfaces)
+The APIs dma_buf_vmap/vunmap are updated accordingly.
+
+Upstream-Status: Inappropriate [upstream is still using k5.10 version]
+
+Signed-off-by: Xulin Sun <xulin.sun@windriver.com>
+---
+ services/server/env/linux/physmem_dmabuf.c | 37 ++++++++--------------
+ 1 file changed, 14 insertions(+), 23 deletions(-)
+
+diff --git a/services/server/env/linux/physmem_dmabuf.c b/services/server/env/linux/physmem_dmabuf.c
+index e659224..f358b28 100644
+--- a/services/server/env/linux/physmem_dmabuf.c
++++ b/services/server/env/linux/physmem_dmabuf.c
+@@ -245,6 +245,7 @@ static PVRSRV_ERROR PMRFinalizeDmaBuf(PMR_IMPL_PRIVDATA pvPriv)
+ 	{
+ 		void *pvKernAddr;
+ 		int err;
++		struct dma_buf_map map;
+ #if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 6, 0))
+ 		int i;
+ #endif
+@@ -260,8 +261,8 @@ static PVRSRV_ERROR PMRFinalizeDmaBuf(PMR_IMPL_PRIVDATA pvPriv)
+ 		}
+ 
+ #if (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 6, 0))
+-		pvKernAddr = dma_buf_vmap(psDmaBuf);
+-		if (!pvKernAddr)
++		err = dma_buf_vmap(psDmaBuf, &map);
++		if (err)
+ 		{
+ 			PVR_DPF((PVR_DBG_ERROR,
+ 					 "%s: Failed to poison allocation before free",
+@@ -270,9 +271,7 @@ static PVRSRV_ERROR PMRFinalizeDmaBuf(PMR_IMPL_PRIVDATA pvPriv)
+ 			goto exit_end_access;
+ 		}
+ 
+-		memset(pvKernAddr, PVRSRV_POISON_ON_FREE_VALUE, psDmaBuf->size);
+-
+-		dma_buf_vunmap(psDmaBuf, pvKernAddr);
++		dma_buf_vunmap(psDmaBuf, &map);
+ #else
+ 		for (i = 0; i < psDmaBuf->size / PAGE_SIZE; i++)
+ 		{
+@@ -380,9 +379,9 @@ PMRAcquireKernelMappingDataDmaBuf(PMR_IMPL_PRIVDATA pvPriv,
+ {
+ 	PMR_DMA_BUF_DATA *psPrivData = pvPriv;
+ 	struct dma_buf *psDmaBuf = psPrivData->psAttachment->dmabuf;
+-	void *pvKernAddr;
+ 	PVRSRV_ERROR eError;
+ 	int err;
++	struct dma_buf_map map;
+ 
+ 	if (psPrivData->ui32PhysPageCount != psPrivData->ui32VirtPageCount)
+ 	{
+@@ -399,15 +398,15 @@ PMRAcquireKernelMappingDataDmaBuf(PMR_IMPL_PRIVDATA pvPriv,
+ 		goto fail;
+ 	}
+ 
+-	pvKernAddr = dma_buf_vmap(psDmaBuf);
+-	if (IS_ERR_OR_NULL(pvKernAddr))
++	err = dma_buf_vmap(psDmaBuf, &map);
++	if (err)
+ 	{
+ 		eError = PVRSRV_ERROR_PMR_NO_KERNEL_MAPPING;
+ 		goto fail_kmap;
+ 	}
+ 
+-	*ppvKernelAddressOut = pvKernAddr + uiOffset;
+-	*phHandleOut = pvKernAddr;
++	*ppvKernelAddressOut = map.vaddr + uiOffset;
++	*phHandleOut = map.vaddr;
+ 
+ 	return PVRSRV_OK;
+ 
+@@ -429,7 +428,7 @@ static void PMRReleaseKernelMappingDataDmaBuf(PMR_IMPL_PRIVDATA pvPriv,
+ 	void *pvKernAddr = hHandle;
+ 	int err;
+ 
+-	dma_buf_vunmap(psDmaBuf, pvKernAddr);
++	dma_buf_vunmap(psDmaBuf, &psDmaBuf->vmap_ptr);
+ 
+ 	do {
+ 		err = dma_buf_end_cpu_access(psDmaBuf, DMA_BIDIRECTIONAL);
+@@ -553,6 +552,7 @@ PhysmemCreateNewDmaBufBackedPMR(PVRSRV_DEVICE_NODE *psDevNode,
+ 	{
+ 		void *pvKernAddr;
+ 		int err;
++		struct dma_buf_map map;
+ #if (LINUX_VERSION_CODE <KERNEL_VERSION(5, 6, 0))
+ 		int i;
+ #endif
+@@ -565,8 +565,8 @@ PhysmemCreateNewDmaBufBackedPMR(PVRSRV_DEVICE_NODE *psDevNode,
+ 		}
+ 
+ #if (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 6, 0))
+-		pvKernAddr = dma_buf_vmap(psDmaBuf);
+-		if (!pvKernAddr)
++		err = dma_buf_vmap(psDmaBuf, &map);
++		if (err)
+ 		{
+ 			PVR_DPF((PVR_DBG_ERROR,
+ 					 "%s: Failed to map buffer for %s)",
+@@ -580,16 +580,7 @@ PhysmemCreateNewDmaBufBackedPMR(PVRSRV_DEVICE_NODE *psDevNode,
+ 			goto errFreePhysAddr;
+ 		}
+ 
+-		if (bZeroOnAlloc)
+-		{
+-			memset(pvKernAddr, 0, psDmaBuf->size);
+-		}
+-		else
+-		{
+-			memset(pvKernAddr, PVRSRV_POISON_ON_ALLOC_VALUE, psDmaBuf->size);
+-		}
+-
+-		dma_buf_vunmap(psDmaBuf, pvKernAddr);
++		dma_buf_vunmap(psDmaBuf, &map);
+ #else
+ 		for (i = 0; i < psDmaBuf->size / PAGE_SIZE; i++)
+ 		{
+-- 
+2.35.1
+

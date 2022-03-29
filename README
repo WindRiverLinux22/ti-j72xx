@@ -427,7 +427,7 @@ added to the system by default. You can manually build the Image as below:
 
   1) Add line as follows to ${buildprj}/build/conf/local.conf:
      $ cat << _EOF >> conf/local.conf
-LICENSE_FLAGS_WHITELIST += "commercial"
+LICENSE_FLAGS_ACCEPTED += "commercial"
 WRL_RECIPES:wr-ti-j72xx += 'viddec-test-app'
 WRL_RECIPES:wr-ti-j72xx += 'videnc-test-app'
 IMAGE_INSTALL:append:ti-j72xx = ' viddec-test-app videnc-test-app'
