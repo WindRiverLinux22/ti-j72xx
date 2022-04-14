@@ -1,5 +1,6 @@
 RDEPENDS:libgl-mesa:ti-j72xx = "${@bb.utils.contains("MACHINE_FEATURES", "gpu", "ti-img-rogue-umlibs", "", d)}"
 J7-GPU:ti-j72xx = "${@bb.utils.contains("MACHINE_FEATURES", "gpu", "yes", "no", d)}"
+PACKAGECONFIG:append:ti-j72xx = " gallium"
 
 do_install:append:ti-j72xx () {
     if [ ${J7-GPU} = "yes" ]; then
