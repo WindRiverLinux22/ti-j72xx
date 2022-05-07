@@ -3,7 +3,7 @@
 #
 
 COMPATIBLE_MACHINE:ti-j72xx = "ti-j72xx"
-TARGET_SUPPORTED_KTYPES:ti-j72xx = "standard"
+TARGET_SUPPORTED_KTYPES:ti-j72xx = "standard preempt-rt"
 
 KERNEL_VERSION_SANITY_SKIP = "1"
 SRCREV_machine:ti-j72xx ?= "${AUTOREV}"
