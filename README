@@ -390,7 +390,7 @@ As below is the step how to build a graphics enabled system and verify the graph
 DISTRO ?= "wrlinux-graphics"
 MACHINE_FEATURES += " gpu"
 WRL_RECIPES:wr-ti-j72xx += 'img-pvr-sdk'
-WRL_RECIPES:wr-ti-j72xx += 'ti-img-rogue-umlibs'
+WRL_RECIPES:meta-ti-bsp += 'ti-img-rogue-umlibs'
 _EOF
      $ bitbake wrlinux-image-std-sato
 
@@ -428,9 +428,9 @@ added to the system by default. You can manually build the Image as below:
   1) Add line as follows to ${buildprj}/build/conf/local.conf:
      $ cat << _EOF >> conf/local.conf
 LICENSE_FLAGS_ACCEPTED += "commercial"
-WRL_RECIPES:wr-ti-j72xx += 'viddec-test-app'
-WRL_RECIPES:wr-ti-j72xx += 'videnc-test-app'
-IMAGE_INSTALL:append:ti-j72xx = ' viddec-test-app videnc-test-app'
+WRL_RECIPES:meta-ti-bsp  += 'viddec-test-app'
+WRL_RECIPES:meta-ti-bsp  += 'videnc-test-app'
+IMAGE_INSTALL:append:meta-ti-bsp  = ' viddec-test-app videnc-test-app'
 _EOF
 
   2) bitbake wrlinux-image-xxx
@@ -472,3 +472,11 @@ set_ctrls VIDIOC_S_EXT_CTRLS succeeded
 Detailed introduction and support information and test steps for video, please refer to
 the user guide "3.7. Multimedia" chapter of "SDK Documentation" from TI website:
  http://software-dl.ti.com/jacinto7/esd/processor-sdk-linux-jacinto7/latest/index_FDS.html
+
+6.9 Build U-Boot
+----------------
+
+By default, the u-boot image is compiled and installed. If you want u-boot to be manually
+compiled separately, use the following command：
+
+	# bitbake u-boot-ti-staging

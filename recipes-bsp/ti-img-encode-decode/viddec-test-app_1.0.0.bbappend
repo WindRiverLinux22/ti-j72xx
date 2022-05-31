@@ -1,0 +1,3 @@
+COMPATIBLE_MACHINE:ti-j72xx = "ti-j72xx"
+
+TARGET_CFLAGS:append:ti-j72xx = " -DDRMMODE -DDRM"
