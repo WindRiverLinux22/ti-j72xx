@@ -430,7 +430,7 @@ added to the system by default. You can manually build the Image as below:
 LICENSE_FLAGS_ACCEPTED += "commercial"
 WRL_RECIPES:meta-ti-bsp  += 'viddec-test-app'
 WRL_RECIPES:meta-ti-bsp  += 'videnc-test-app'
-IMAGE_INSTALL:append:meta-ti-bsp  = ' viddec-test-app videnc-test-app'
+IMAGE_INSTALL:append:ti-j72xx  = ' viddec-test-app videnc-test-app'
 _EOF
 
   2) bitbake wrlinux-image-xxx
