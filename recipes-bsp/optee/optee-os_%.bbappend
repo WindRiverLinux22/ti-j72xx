@@ -1,15 +1,17 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-PV = "3.12.0+git${SRCPV}"
+PV = "3.17.0+git${SRCPV}"
 
 OPTEEMACHINE = "k3-j721e"
 OPTEEOUTPUTMACHINE = "k3"
 
-SRCREV = "3d47a131bca1d9ed511bfd516aa5e70269e12c1d"
+SRCREV = "15a746d28d10df3d79d72bc9fe4a5a654b88bcca"
 
 FILES:${PN} += "/lib/firmware/*"
 
 COMPATIBLE_MACHINE:ti-j72xx = "ti-j72xx"
+
+DEPENDS:append:ti-j72xx = " python3-cryptography-native"
 
 do_compile:prepend:ti-j72xx() {
     export TI_SECURE_DEV_PKG=${TI_SECURE_DEV_PKG}

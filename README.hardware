@@ -33,6 +33,8 @@ This BSP supports the following boards:
 			    TI SDK ti-processor-sdk-linux-j7-evm-08.01.00.07
   - 2022/05 (LINUXPG-1163): WRLinux CI/CD branch support. Standard and Preempt-rt support based on
 			    TI SDK ti-processor-sdk-linux-j7-evm-08.01.00.07
+  - 2023/01 (LINUXPG-1407): Wind River Linux 10.22, Standard and Preempt-rt support based on
+			    TI SDK ti-processor-sdk-linux-j7-evm-08_04_00_11
 
 3. BSP Features
 ===============
@@ -111,5 +113,5 @@ in a different environment it may possibly have some issues.
 	Processor:		J721E SR1.0
 	Board Rev:		J7X-BASE-CPB rev E3, J721EX-PM2-SOM rev E7, J7X-VSC8514-ETH rev E2
 	BootLoader:		U-Boot
-	BootLoader Version:	U-Boot 2021.01-g15769936a5 (Dec 20 2021 - 16:36:05 +0000)
+	BootLoader Version:	U-Boot 2021.01-ga169f42610 (Aug 30 2022 - 09:20:07 +0000)
 
