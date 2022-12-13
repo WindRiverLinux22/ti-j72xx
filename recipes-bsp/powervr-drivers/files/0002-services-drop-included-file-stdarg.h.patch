@@ -1,0 +1,80 @@
+From 263cd435827380b68f06f77eb3d0f80e081e1eab Mon Sep 17 00:00:00 2001
+From: Xulin Sun <xulin.sun@windriver.com>
+Date: Tue, 13 Dec 2022 10:46:51 +0800
+Subject: [PATCH 2/2] services: drop included file stdarg.h
+
+Since there is already file stdarg.h in the kernel, here drop included file
+to avoid below building error:
+
+target_aarch64/kbuild/services/server/common/di_server.c:43:
+| include/linux/stdarg.h:8: error: "va_arg" redefined [-Werror]
+|     8 | #define va_arg(v, T)    __builtin_va_arg(v, T)
+|       |
+| In file included from include/linux/kernel.h:5,
+|                  from ti-img-rogue-driver/1.15.6133109-bb/git/include/kernel_types.h:42,
+|                  from ti-img-rogue-driver/1.15.6133109-bb/git/include/img_types.h:70,
+|                  from ti-img-rogue-driver/1.15.6133109-bb/git/services/server/include/di_common.h:46,
+|                  from ti-img-rogue-driver/1.15.6133109-bb/git/services/server/include/di_server.h:48
+
+Upstream-Status: Inappropriate [upstream is still using k5.10 version]
+
+Signed-off-by: Xulin Sun <xulin.sun@windriver.com>
+---
+ services/server/env/linux/km_apphint.c | 1 -
+ services/server/include/di_server.h    | 2 --
+ services/server/include/lists.h        | 1 -
+ services/shared/common/htbuffer.c      | 1 -
+ 4 files changed, 5 deletions(-)
+
+diff --git a/services/server/env/linux/km_apphint.c b/services/server/env/linux/km_apphint.c
+index e152d39..caf9eea 100644
+--- a/services/server/env/linux/km_apphint.c
++++ b/services/server/env/linux/km_apphint.c
+@@ -73,7 +73,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ #include "km_apphint.h"
+ 
+ #if defined(PDUMP)
+-#include <stdarg.h>
+ #include "pdump_km.h"
+ #endif
+ 
+diff --git a/services/server/include/di_server.h b/services/server/include/di_server.h
+index 9b90d2a..af694c8 100644
+--- a/services/server/include/di_server.h
++++ b/services/server/include/di_server.h
+@@ -43,8 +43,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ #ifndef DI_SERVER_H
+ #define DI_SERVER_H
+ 
+-#include <stdarg.h>
+-
+ #include "di_common.h"
+ #include "pvrsrv_error.h"
+ #include "img_defs.h"
+diff --git a/services/server/include/lists.h b/services/server/include/lists.h
+index cef724e..ea7186d 100644
+--- a/services/server/include/lists.h
++++ b/services/server/include/lists.h
+@@ -46,7 +46,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ 
+ /* instruct QAC to ignore warnings about the following custom formatted macros */
+ /* PRQA S 0881,3410 ++ */
+-#include <stdarg.h>
+ #include "img_types.h"
+ #include "device.h"
+ #include "power.h"
+diff --git a/services/shared/common/htbuffer.c b/services/shared/common/htbuffer.c
+index 00dbe92..762081f 100644
+--- a/services/shared/common/htbuffer.c
++++ b/services/shared/common/htbuffer.c
+@@ -45,7 +45,6 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */ /**************************************************************************/
+ 
+-#include <stdarg.h>
+ #include "htbuffer.h"
+ #include "osfunc.h"
+ #include "client_htbuffer_bridge.h"
+-- 
+2.36.1
+

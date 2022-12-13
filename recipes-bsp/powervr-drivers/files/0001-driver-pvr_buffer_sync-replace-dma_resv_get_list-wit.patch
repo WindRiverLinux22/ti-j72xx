@@ -1,7 +1,7 @@
-From 1e5540c5e1c8a36b7ac6e96ef33f5e35f6f3c742 Mon Sep 17 00:00:00 2001
+From 328a88a4fe0c70fb17d1628647435428609d8361 Mon Sep 17 00:00:00 2001
 From: Xulin Sun <xulin.sun@windriver.com>
 Date: Sun, 13 Mar 2022 18:05:24 +0800
-Subject: [PATCH 1/3] driver: pvr_buffer_sync: replace dma_resv_get_list with
+Subject: [PATCH 1/2] driver: pvr_buffer_sync: replace dma_resv_get_list with
  dma_resv_shared_list
 
 The kernel commit fb5ce730f21434d8(dma-buf: rename and cleanup dma_resv_get_list v2)
@@ -13,14 +13,14 @@ Upstream-Status: Inappropriate [upstream is still using k5.10 version]
 
 Signed-off-by: Xulin Sun <xulin.sun@windriver.com>
 ---
- kernel/drivers/staging/imgtec/pvr_buffer_sync.c | 8 ++++----
+ services/server/env/linux/pvr_buffer_sync.c | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/drivers/staging/imgtec/pvr_buffer_sync.c b/kernel/drivers/staging/imgtec/pvr_buffer_sync.c
-index 722989d..eb180a5 100644
---- a/kernel/drivers/staging/imgtec/pvr_buffer_sync.c
-+++ b/kernel/drivers/staging/imgtec/pvr_buffer_sync.c
-@@ -193,8 +193,8 @@ pvr_buffer_sync_pmrs_fence_count(u32 nr_pmrs, struct _PMR_ **pmrs,
+diff --git a/services/server/env/linux/pvr_buffer_sync.c b/services/server/env/linux/pvr_buffer_sync.c
+index c5f0344..c9c2de5 100644
+--- a/services/server/env/linux/pvr_buffer_sync.c
++++ b/services/server/env/linux/pvr_buffer_sync.c
+@@ -192,8 +192,8 @@ pvr_buffer_sync_pmrs_fence_count(u32 nr_pmrs, struct _PMR_ **pmrs,
  		if (WARN_ON_ONCE(!resv))
  			continue;
  
@@ -31,7 +31,7 @@ index 722989d..eb180a5 100644
  
  		if (fence &&
  		    (!exclusive || !resv_list || !resv_list->shared_count))
-@@ -252,8 +252,8 @@ pvr_buffer_sync_check_fences_create(struct pvr_fence_context *fence_ctx,
+@@ -251,8 +251,8 @@ pvr_buffer_sync_check_fences_create(struct pvr_fence_context *fence_ctx,
  				goto err_destroy_fences;
  		}
  
@@ -43,5 +43,5 @@ index 722989d..eb180a5 100644
  		if (fence &&
  		    (!exclusive || !resv_list || !resv_list->shared_count)) {
 -- 
-2.35.1
+2.36.1
 

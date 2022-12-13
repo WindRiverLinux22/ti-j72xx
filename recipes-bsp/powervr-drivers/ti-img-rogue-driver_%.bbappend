@@ -1,18 +1,16 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 COMPATIBLE_MACHINE:ti-j72xx = "ti-j72xx"
 
-BRANCH = "1.13-5776728/linux-k5.10"
+BRANCH = "linuxws/dunfell/k5.10/${PV}_unified_fw_pagesize"
 
-SRC_URI = " \
-    git://git.ti.com/graphics/ti-img-rogue-driver.git;branch=${BRANCH} \
+SRC_URI += " \
     file://0001-driver-pvr_buffer_sync-replace-dma_resv_get_list-wit.patch \
-    file://0002-driver-pvr_drm-don-t-set-dev_priv_size-0.patch \
-    file://0003-service-physmem_dmabuf-replace-dma_buf_vmap-x-with-d.patch \
+    file://0002-services-drop-included-file-stdarg.h.patch \
 "
-SRCREV = "35a25875ae8738f82c7cabc6b077ef992b0cca84"
+SRCREV = "6d3d62a15ceb85b719c35f34c6c9e35f556b406b"
 
-TARGET_PRODUCT = "j721e_linux"
-TARGET_BVNC = "22.104.208.318"
+TARGET_PRODUCT:ti-j72xx = "j721e_linux"
+TARGET_BVNC:ti-j72xx = "22.104.208.318"
 MACHINE_KERNEL_PR:append = "b"
 
 do_compile:prepend() {
